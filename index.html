@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Galeri Elgi</title>
+  <style>
+    :root {
+      --ungu: #7f3fbf;
+      --biru: #3478f6;
+      --merah-muda: #ff5f7e;
+      --background: #f7f7fb;
+      --text: #222;
+      --white: #fff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--ungu);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    nav button {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      font-size: 0.9rem;
+      background: none;
+      cursor: pointer;
+      transition: 0.3s;
+      color: var(--ungu);
+    }
+
+    nav button.active {
+      background: var(--ungu);
+      color: white;
+      font-weight: bold;
+    }
+
+    .gallery-tab {
+      width: 100%;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .media-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      cursor: pointer;
+      background: #ddd;
+    }
+
+    .media-wrapper img,
+    .media-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.3s;
+      display: block;
+    }
+
+    .media-wrapper:hover img,
+    .media-wrapper:hover video {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .card-title {
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: var(--ungu);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 99;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .modal img,
+    .modal video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .social-media {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .social-media a {
+      margin: 0 6px;
+      display: inline-block;
+      text-decoration: none;
+      color: white;
+      background: var(--biru);
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      border-radius: 16px;
+      transition: background 0.3s;
+    }
+
+    .social-media a:hover {
+      background: var(--merah-muda);
+    }
+
+    footer {
+      background: var(--ungu);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: auto;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 480px) {
+      .gallery {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .card-title {
+        font-size: 0.75rem;
+      }
+
+      nav button {
+        font-size: 0.85rem;
+        padding: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Galeri Kami</h1>
+  </header>
+
+  <!-- Tambahan judul/deskripsi -->
+  <section style="text-align:center; padding: 0.6rem 1rem; background: #f0e7ff; color: #5a3393;">
+    <h2 style="margin:0 0 0.2rem; font-size:1.2rem;">Koleksi Foto & Video Kami</h2>
+    <p style="margin:0; font-size:0.85rem; max-width:500px; margin-left:auto; margin-right:auto;">
+      Menampilkan momen-momen berharga dalam bentuk foto dan video. Selamat menikmati galeri saya!
+    </p>
+  </section>
+
+
+  
+
+  <nav>
+    <button id="fotoBtn" class="active" onclick="showTab('foto')">📸 Foto</button>
+    <button id="videoBtn" onclick="showTab('video')">🎬 Video</button>
+  </nav>
+
+
+  <!-- Galeri Foto -->
+  <div id="foto" class="gallery-tab">
+    <div class="gallery">
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/1.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Slide 1</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/2.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pohon</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/500x500?text=Pantai" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pantai</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/800x600?text=Kota" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Kota</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/1.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Slide 1</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/2.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pohon</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/500x500?text=Pantai" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pantai</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/800x600?text=Kota" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Kota</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/1.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Slide 1</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="img/2.png" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pohon</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/500x500?text=Pantai" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Pantai</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <img src="https://via.placeholder.com/800x600?text=Kota" onclick="openModal(this.src, 'image')" />
+        </div>
+        <div class="card-content">
+          <div class="card-title">Kota</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galeri Video -->
+  <div id="video" class="gallery-tab" style="display:none;">
+    <div class="gallery">
+      <div class="card">
+        <div class="media-wrapper">
+          <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted onclick="openModal(this.src, 'video')"></video>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Perjalanan</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <video src="https://www.w3schools.com/html/movie.mp4" muted onclick="openModal(this.src, 'video')"></video>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Komunitas</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted onclick="openModal(this.src, 'video')"></video>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Sunset</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media-wrapper">
+          <video src="https://www.w3schools.com/html/movie.mp4" muted onclick="openModal(this.src, 'video')"></video>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Festival</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tombol Sosial Media di Bawah -->
+  <div class="social-media">
+    <a href="https://instagram.com/" target="_blank">Instagram</a>
+    <a href="https://instagram.com/" target="_blank">Instagram</a>
+  </div>
+
+  <section style="max-width: 400px; margin: 2rem auto; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(190, 2, 2, 0.1); font-family: Arial, sans-serif;">
+    <form onsubmit="submitContactForm(event)">
+      <h3 style="text-align: center; margin-bottom: 1rem; color: #8d10af; font-weight: bolder;">Hubungi Kami</h3>
+      <input type="text" placeholder="Nama" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+      <input type="email" placeholder="Email" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+      <textarea rows="4" placeholder="Pesan..." required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+      <button type="submit" style="width: 100%; padding: 0.5rem; background: #960c0c; color: white; border: none; border-radius: 4px; cursor: pointer;">Kirim</button>
+    </form>
+  </section>
+  
+  <script>
+    function submitContactForm(event) {
+      event.preventDefault();
+      alert("Pesan berhasil dikirim. Terima kasih!");
+      event.target.reset();
+    }
+  </script>
+  
+
+  <!-- Modal -->
+  <div id="myModal" class="modal" onclick="closeModal(event)">
+    <span class="close">&times;</span>
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Elgi Listian. Semua hak dilindungi.
+  </footer>
+
+  <script>
+    function showTab(tab) {
+      document.getElementById('foto').style.display = (tab === 'foto') ? 'block' : 'none';
+      document.getElementById('video').style.display = (tab === 'video') ? 'block' : 'none';
+      document.getElementById('fotoBtn').classList.toggle('active', tab === 'foto');
+      document.getElementById('videoBtn').classList.toggle('active', tab === 'video');
+    }
+
+    function openModal(src, type) {
+      const modal = document.getElementById("myModal");
+      const modalContent = document.getElementById("modal-content");
+      modal.style.display = "flex";
+      modalContent.innerHTML = '';
+      if (type === 'image') {
+        const img = document.createElement('img');
+        img.src = src;
+        modalContent.appendChild(img);
+      } else if (type === 'video') {
+        const video = document.createElement('video');
+        video.src = src;
+        video.controls = true;
+        video.autoplay = true;
+        modalContent.appendChild(video);
+      }
+    }
+
+    function closeModal(event) {
+      if (event.target.id === 'myModal' || event.target.classList.contains('close')) {
+        document.getElementById("myModal").style.display = "none";
+        document.getElementById("modal-content").innerHTML = '';
+      }
+    }
+
+    function submitContactForm(event) {
+    event.preventDefault();
+    alert("Pesan berhasil dikirim. Terima kasih!");
+    event.target.reset();
+  }
+  </script>
+</body>
+</html>
